@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityGo - Luxury Coastal Tourism</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="wave" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M0 50 Q25 25 50 50 T100 50 V100 H0 Z" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23wave)"/></svg>') repeat;
+            animation: wave 20s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100px); }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-bar {
+            margin: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            background: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .promo-slider {
+            margin: 0 20px 20px;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 180px;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: end;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-content {
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .slide-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .slide-desc {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background: #0072ff;
+        }
+
+        .categories {
+            margin: 0 20px 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-card:hover::before {
+            left: 100%;
+        }
+
+        .category-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .membership-banner {
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .membership-banner::before {
+            content: '✨';
+            position: absolute;
+            font-size: 50px;
+            top: -10px;
+            right: -10px;
+            opacity: 0.3;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(10deg); }
+        }
+
+        .membership-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .membership-desc {
+            font-size: 14px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .join-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .join-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .partners {
+            margin: 0 20px 20px;
+        }
+
+        .partner-grid {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .partner-card {
+            min-width: 120px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .partner-card:hover {
+            transform: scale(1.05);
+        }
+
+        .partner-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .partner-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 414px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: #0072ff;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">CityGo</div>
+            <div class="tagline">Luxury Coastal Tourism</div>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search destinations, hotels, experiences...">
+            <button class="search-btn">🔍</button>
+        </div>
+
+        <div class="promo-slider">
+            <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 200%22><rect fill=%22%2300c6ff%22 width=%22400%22 height=%22200%22/><circle fill=%22%23fff%22 opacity=%220.3%22 cx=%22350%22 cy=%2250%22 r=%2230%22/><rect fill=%22%23ffd700%22 x=%22300%22 y=%22150%22 width=%22100%22 height=%2250%22 rx=%2210%22/></svg>')">
+                <div class="slide-content">
+                    <div class="slide-title">Romantic Seaside Getaways</div>
+                    <div class="slide-desc">Exclusive beachfront resorts for couples</div>
+                </div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 200%22><rect fill=%22%23667eea%22 width=%22400%22 height=%22200%22/><rect fill=%22%23fff%22 opacity=%220.2%22 x=%22100%22 y=%2250%22 width=%22200%22 height=%22100%22 rx=%2220%22/><circle fill=%22%23ffd700%22 cx=%22200%22 cy=%22100%22 r=%2215%22/></svg>')">
+                <div class="slide-content">
+                    <div class="slide-title">Smart EV Hotels</div>
+                    <div class="slide-desc">Eco-luxury with charging stations</div>
+                </div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 200%22><rect fill=%22%23ff6b6b%22 width=%22400%22 height=%22200%22/><polygon fill=%22%23fff%22 opacity=%220.3%22 points=%22200,50 250,100 200,150 150,100%22/><rect fill=%22%23ffd700%22 x=%22180%22 y=%22170%22 width=%2240%22 height=%2220%22 rx=%225%22/></svg>')">
+                <div class="slide-content">
+                    <div class="slide-title">Live Casino Views</div>
+                    <div class="slide-desc">Premium gaming with ocean panoramas</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+        <div class="categories">
+            <h2 class="section-title">Explore Services</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="selectCategory('romantic')">
+                    <span class="category-icon">💕</span>
+                    <div class="category-name">Romantic Spots</div>
+                </div>
+                <div class="category-card" onclick="selectCategory('hotels')">
+                    <span class="category-icon">🏨</span>
+                    <div class="category-name">Smart Hotels</div>
+                </div>
+                <div class="category-card" onclick="selectCategory('riverside')">
+                    <span class="category-icon">🏞</span>
+                    <div class="category-name">Riverside Views</div>
+                </div>
+                <div class="category-card" onclick="selectCategory('seaside')">
+                    <span class="category-icon">🌊</span>
+                    <div class="category-name">Seaside Luxury</div>
+                </div>
+                <div class="category-card" onclick="selectCategory('ev')">
+                    <span class="category-icon">⚡</span>
+                    <div class="category-name">EV Access</div>
+                </div>
+                <div class="category-card" onclick="selectCategory('casino')">
+                    <span class="category-icon">🎰</span>
+                    <div class="category-name">Casino Views</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="membership-banner">
+            <div class="membership-title">Join CityGo Premium</div>
+            <div class="membership-desc">Unlock exclusive deals, priority booking, and VIP experiences</div>
+            <button class="join-btn" onclick="joinMembership()">Join Now</button>
+        </div>
+
+        <div class="partners">
+            <h2 class="section-title">Featured Partners</h2>
+            <div class="partner-grid">
+                <div class="partner-card" onclick="viewPartner('hotels')">
+                    <div class="partner-logo">🏨</div>
+                    <div class="partner-name">Premium Hotels</div>
+                </div>
+                <div class="partner-card" onclick="viewPartner('restaurants')">
+                    <div class="partner-logo">🍽</div>
+                    <div class="partner-name">Fine Dining</div>
+                </div>
+                <div class="partner-card" onclick="viewPartner('cafes')">
+                    <div class="partner-logo">☕</div>
+                    <div class="partner-name">Coastal Cafes</div>
+                </div>
+                <div class="partner-card" onclick="viewPartner('spas')">
+                    <div class="partner-logo">🧘</div>
+                    <div class="partner-name">Luxury Spas</div>
+                </div>
+                <div class="partner-card" onclick="viewPartner('activities')">
+                    <div class="partner-logo">🚤</div>
+                    <div class="partner-name">Water Sports</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="height: 80px;"></div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div>Home</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">🔍</div>
+                <div>Explore</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">❤</div>
+                <div>Favorites</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">💎</div>
+                <div>Premium</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">👤</div>
+                <div>Profile</div>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index - 1;
+            showSlide(currentSlideIndex);
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        // Auto-advance slides
+        setInterval(nextSlide, 4000);
+
+        function selectCategory(category) {
+            console.log('Selected category:', category);
+            // Add your category selection logic here
+            alert(Exploring ${category} options...);
+        }
+
+        function joinMembership() {
+            console.log('Join membership clicked');
+            alert('Redirecting to membership signup...');
+        }
+
+        function viewPartner(partner) {
+            console.log('View partner:', partner);
+            alert(Viewing ${partner} partners...);
+        }
+
+        // Add some interactive touches
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            card.addEventListener('touchend', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+        });
+    </script>
+</body>
+</html>
